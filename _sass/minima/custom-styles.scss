@@ -6,6 +6,32 @@
 
 /*-----------------------------------*/
 /*----- ADD YOUR STYLES BELOW -------*/
+.site-title {
+    font-family: 'Russo One', sans-serif;
+}
+
+.site-header {
+    border-top: 0px solid #424242;
+    border-bottom: 1px solid #e8e8e8;
+}
+
+.post-title {
+    font-family: 'Roboto Condensed', sans-serif;
+}
+
+.page-link {
+    font-family: 'Bungee', helvetica;
+    font-size: 16px;
+}
+
+.home #posts {
+    font-family: 'Bungee', monospace;
+}
+
+.post-link {
+    font-family: 'Roboto Condensed', sans-serif;
+}
+
 
 // If you want to turn off dark background for syntax highlighting, comment or delete the below line.
 @import "minima/fastpages-dracula-highlight"; 
