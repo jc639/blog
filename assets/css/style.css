@@ -423,6 +423,18 @@ pre code { font-size: 15px !important; }
 
 /*-----------------------------------*/
 /*----- ADD YOUR STYLES BELOW -------*/
+.site-title { font-family: 'Russo One', sans-serif; }
+
+.site-header { border-top: 0px solid #424242; border-bottom: 1px solid #e8e8e8; }
+
+.post-title { font-family: 'Roboto Condensed', sans-serif; }
+
+.page-link { font-family: 'Bungee', helvetica; font-size: 16px; }
+
+.home #posts { font-family: 'Bungee', monospace; }
+
+.post-link { font-family: 'Roboto Condensed', sans-serif; }
+
 .language-python + .language-plaintext { border-left: 1px solid grey; margin-left: 1rem !important; }
 
 [class^="language-"]:not(.language-plaintext) pre, [class^="language-"]:not(.language-plaintext) code { background-color: #323443 !important; color: #f8f8f2; }
