@@ -33,6 +33,20 @@ jobs:
     - name: convert notebooks and word docs to posts
       uses: ./_action_files
 
+    - name: setup python
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.7
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+
+    - name: make-header
+      run: |
+        python scripts/make_header.py
+
     - name: setup directories for Jekyll build
       run: |
         rm -rf _site
