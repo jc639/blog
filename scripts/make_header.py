@@ -161,7 +161,7 @@ def line_plot(post_titles: list, deltas: list, cutoff=-30):
                 transform=ax.transAxes)
         bbox_props = dict(boxstyle="round", fc="white", ec="black")
         if len(deltas) > 0:
-            last_post_days = str(abs(deltas[0]))
+            last_post_days = str(abs(deltas[0]) - 1)
         else:
             last_post_days = '+' + str(abs(cutoff))
         ax.text(1.3, 0.4, last_post_days, bbox=bbox_props, transform=ax.transAxes,
