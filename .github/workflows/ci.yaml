@@ -6,6 +6,8 @@ on:
   # no filters on pull requests, so intentionally left blank
   pull_request:
   workflow_dispatch:
+  schedule:
+    - cron: "0 1 * * *"
 
 jobs:     
   build-site:
