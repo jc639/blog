@@ -13,3 +13,4 @@ _notebooks/.ipynb_checkpoints
 .tweet-cache
 __pycache__
 .vscode/
+_notebooks/drafts/
