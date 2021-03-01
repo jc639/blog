@@ -16,7 +16,7 @@ jobs:
     steps:
       
     - name: Check if secret exists
-      if: github.event_name == 'push'
+      if: ( github.event_name == 'push' ) || ( github.event_name == 'schedule' )
       run: |
         if [ -z "$deploy_key" ]
         then
@@ -73,7 +73,7 @@ jobs:
         cp CNAME _site/ 2>/dev/null || :
 
     - name: Deploy
-      if: github.event_name == 'push'
+      if: ( github.event_name == 'push' ) || ( github.event_name == 'schedule' )
       uses: peaceiris/actions-gh-pages@v3
       with:
         deploy_key: ${{ secrets.SSH_DEPLOY_KEY }}
