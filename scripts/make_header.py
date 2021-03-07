@@ -113,7 +113,7 @@ def filter_titles(post_titles: list, deltas: list, cutoff=-30):
     for title, delta in zip(post_titles, deltas):
         if delta > cutoff:
             filtered_titles.append(title)
-            filtered_deltas.append(delta - 1)
+            filtered_deltas.append(delta + 1)
     sorted_pairs = sorted(zip(filtered_titles, filtered_deltas), key=lambda x: x[1])
     tuples = zip(*sorted_pairs)
     filtered_titles, filtered_deltas = [list(tup) for tup in tuples]
