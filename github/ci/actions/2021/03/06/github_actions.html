@@ -90,7 +90,7 @@ window.onload = wrap_img;
        • <span class="read-time" title="Estimated read time">
     
     
-      9 min read
+      10 min read
     
 </span></p>
 
@@ -124,7 +124,7 @@ window.onload = wrap_img;
         
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>Github Actions are a way to automate your workflow so you can build continuous-integration/continuous development (CI/CD) workflows. You can run tests, check your library or package can build, generate and commit new files all on various triggers such as pushes, pull requests or even schedules. It's really awesome for automating lots of different tasks and with scripts the possibilities are endless. It's even how this website get's built.</p>
+<p>Github Actions are a way to automate your workflow so you can build continuous-integration/continuous development (CI/CD) workflows. You can run tests, check your library or package can build, generate and commit new files all on various triggers such as pushes, pull requests or even schedules. It's really awesome for automating lots of different tasks and with scripts the possibilities are endless. It's even how this website gets built.</p>
 
 </div>
 </div>
@@ -141,7 +141,7 @@ window.onload = wrap_img;
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="An-action-workflow">An action workflow<a class="anchor-link" href="#An-action-workflow"> </a></h2><p>Fastpages comes with a CI YAML file that looks something like this, which I will break down and explain and then show how I modified it so that the header is generated on both when pushing and on a schedule:</p>
+<h2 id="An-action-workflow">An action workflow<a class="anchor-link" href="#An-action-workflow"> </a></h2><p>Fastpages comes with a CI YAML file that looks something like this. I will break this down bit by bit to explain and then show how I modified it so that a new header is generated both when pushing new notebooks and on a schedule:</p>
 
 <pre><code>name: CI
 on:
@@ -207,7 +207,7 @@ jobs:
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>The first bit sets up when the Action file gets run. The following gives the Action a name and specifies it should run on a push to master branch, or pull requests. The workflow dispatch allows manual triggering of the workflow from the actions tab or REST API on Github.</p>
+<p>The first bit sets up when the Action file gets run. The following gives the Action a name and specifies it should run on a push to master branch, or pull requests. The <code>workflow_dispatch:</code> allows manual triggering of the workflow from the actions tab or REST API on Github.</p>
 
 <pre><code>name: CI
 on:
@@ -223,7 +223,7 @@ on:
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>Next, we set up the job and what it runs on - here it is the latest ubuntu image. What this means is each time this runs we get a self-contained environment to carry out the steps in this environment. You can see below that we can sprinkle our action files with conditional <code>if: ...</code> statements allowing control flow in our actions.</p>
+<p>Next, we set up the job and what it runs on - here it is the latest ubuntu image. What this means is that each time this runs we get a self-contained environment in which to carry out the steps of the workflow. You can see below that we can sprinkle our action files with conditional <code>if: ...</code> statements allowing control flow in our actions.</p>
 
 <pre><code>jobs:     
   build-site:
@@ -236,7 +236,7 @@ on:
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Now it's time to define the actual steps that we want to execute. The key part here is that we give the step a name and then either have a <code>run:</code> or <code>uses:</code> key for the given step. If we have a <code>run:</code> key we can execute statements as if we were in the bash terminal (this being a ubuntu image) such as <code>cd ..</code> or <code>ls</code> etc.</p>
-<p>The <code>use:</code> allows us to use (heh) specific actions created by others - of which there are many on the <a href="https://github.com/marketplace?type=actions">GitHub Actions marketplace</a>. You can pass arguments by using the <code>with:</code> key to these prespecified actions.</p>
+<p>The <code>use:</code> allows us to use specific actions created by others - of which there are many on the <a href="https://github.com/marketplace?type=actions">GitHub Actions marketplace</a>. You can pass arguments by using the <code>with:</code> key to these prespecified actions.</p>
 <p>The first step below just checks to see if we have set up a deploy key, something which should be done when we first set up a blog with fastpages:</p>
 
 <pre><code>    - name: Check if secret exists
@@ -255,7 +255,7 @@ on:
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>Next, it uses an action to checkout our blog repository and then uses a local action directory to convert our notebooks to markdown files. This conversion puts the markdown in the <code>_posts/</code> directory of the blog repository.</p>
+<p>Next, it uses a marketplace action to checkout our blog repository and then uses a local action directory to convert our notebooks to markdown files. This conversion puts the markdown in the <code>_posts/</code> directory of the blog repository.</p>
 
 <pre><code>    - name: Copy Repository Contents
       uses: actions/checkout@main
@@ -302,8 +302,8 @@ on:
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="How-to-make-the-custom-header-image">How to make the custom header image<a class="anchor-link" href="#How-to-make-the-custom-header-image"> </a></h2><p>So to make the custom header image I wrote a <a href="https://github.com/jc639/blog/blob/master/scripts/make_header.py">little script</a> of which the main execution function is shown below in the collapsable code fold, but it's not too important to understand it for this. The main thing is that it reads the markdown posts in the <code>_posts/</code> folder to get the titles and dates published, and then it can construct the plot with a list of the titles and time since today's date expressed in days.</p>
-<p>As posts only ever get put in the <code>_posts/</code> directory at site build time and the resulting markdown is not committed to the repository I realised I can slot this script into the current <code>ci.yaml</code> workflow.</p>
+<h2 id="How-to-make-the-custom-header-image">How to make the custom header image<a class="anchor-link" href="#How-to-make-the-custom-header-image"> </a></h2><p>To make the custom header image I wrote a <a href="https://github.com/jc639/blog/blob/master/scripts/make_header.py">little script</a> of which the main execution function is shown below in the collapsable code fold. It's not too important to understand it for this explanation, just that it is simple python script that produces a matplotlib plot. The main thing is that it reads the markdown posts in the <code>_posts/</code> folder to get the titles and dates published, and then it can construct the plot with a list of the titles and time since today's date expressed in days.</p>
+<p>As blog posts only ever get put in the <code>_posts/</code> directory at site build time and the resulting markdown is not committed to the repository I realised I can slot this script into the current <code>ci.yaml</code> workflow.</p>
 
 </div>
 </div>
@@ -361,7 +361,7 @@ on:
                 <span class="n">transform</span><span class="o">=</span><span class="n">ax</span><span class="o">.</span><span class="n">transAxes</span><span class="p">)</span>
         <span class="n">bbox_props</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">boxstyle</span><span class="o">=</span><span class="s2">&quot;round&quot;</span><span class="p">,</span> <span class="n">fc</span><span class="o">=</span><span class="s2">&quot;white&quot;</span><span class="p">,</span> <span class="n">ec</span><span class="o">=</span><span class="s2">&quot;black&quot;</span><span class="p">)</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">deltas</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="n">last_post_days</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">deltas</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+            <span class="n">last_post_days</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">deltas</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">last_post_days</span> <span class="o">=</span> <span class="s1">&#39;+&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">cutoff</span><span class="p">))</span>
         <span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mf">1.3</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">,</span> <span class="n">last_post_days</span><span class="p">,</span> <span class="n">bbox</span><span class="o">=</span><span class="n">bbox_props</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="n">ax</span><span class="o">.</span><span class="n">transAxes</span><span class="p">,</span>
@@ -382,8 +382,8 @@ on:
 
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>Heres the changes I made to make that work.</p>
-<p>Firstly I had to add another trigger to the action. It's fine that it runs on push as I want new blog posts to be added to the header as they are published but I also want it to update every day so that the time since publishing updates daily for each post. Handily GitHub actions have a <code>schedule</code> trigger, where we set a schedule for the action to occur using Cron expressions.</p>
+<p>Here are the changes I made to make that work.</p>
+<p>Firstly I had to add another trigger to the action. It's fine that it runs on push as I want new blog posts to be added to the header as they are published. But I also want it to update every day so that the time since publishing updates daily for each post. Handily, GitHub actions have a <code>schedule</code> trigger where we can set a schedule for the action to occur using Cron expressions.</p>
 
 <pre><code>name: CI
 on:
@@ -402,8 +402,9 @@ on:
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>Next, I slot the script and associated setup in between <code>- name: convert notebooks and word docs to posts</code> and the <code>- name: setup directories for Jekyll build steps</code>. To use the script we need to have python and the required libraries installed. Luckily this is again quite easy using the <code>actions/setup-python</code> action followed by a <code>run: pip install -r requirements.txt</code> step.</p>
-<p>The next step installs the humor sans font that is required by <code>plt.xkcd</code> and then finally we run the script.</p>
+<p>Next, I slot the script and associated setup in between <code>- name: convert notebooks and word docs to posts</code> and the <code>- name: setup directories for Jekyll build steps</code>.</p>
+<p>To use the script we need to have python and the required libraries installed. Luckily this is again quite easy using the <code>actions/setup-python</code> action followed by a <code>run: pip install -r requirements.txt</code> step. These are the <code>- name: setup python</code> and <code>- name: Install dependencies</code> steps, respectively.</p>
+<p>The next step installs the humor sans font that is required by <code>plt.xkcd</code> and then finally we run the script in the <code>- name: make-header</code> step.</p>
 
 <pre><code>    - name: convert notebooks and word docs to posts
       uses: ./_action_files
@@ -441,6 +442,94 @@ on:
 <p>The very last thing we have to change is the conditional <code>if:</code> in the final <code>- name: Deploy</code> step to also run this when the <code>github.event_name</code> is equal to 'schedule'. Viola!</p>
 
 <pre><code>    - name: Deploy
+      if: ( github.event_name == 'push' ) || ( github.event_name == 'schedule' )
+      uses: peaceiris/actions-gh-pages@v3
+      with:
+        deploy_key: $
+        publish_dir: ./_site</code></pre>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Here is the new <code>ci.yaml</code> workflow file in full:</p>
+
+<pre><code>name: CI
+on:
+  push:
+    branches:
+      - master # need to filter here so we only deploy when there is a push to master
+  # no filters on pull requests, so intentionally left blank
+  pull_request:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 1 * * *"
+
+jobs:     
+  build-site:
+    if: ( github.event.commits[0].message != 'Initial commit' ) || github.run_number &gt; 1
+    runs-on: ubuntu-latest
+    steps:
+
+    - name: Check if secret exists
+      if: ( github.event_name == 'push' ) || ( github.event_name == 'schedule' )
+      run: |
+        if [ -z "$deploy_key" ]
+        then
+          echo "You do not have a secret named SSH_DEPLOY_KEY.  This means you did not follow the setup instructions carefully.  Please try setting up your repo again with the right secrets."
+          exit 1;
+        fi
+      env:
+       deploy_key: $
+
+
+    - name: Copy Repository Contents
+      uses: actions/checkout@main
+      with:
+        persist-credentials: false
+
+    - name: convert notebooks and word docs to posts
+      uses: ./_action_files
+
+    - name: setup python
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.7
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+
+    - name: Install humor sans font
+      run: |
+        sudo apt-get update -y
+        sudo apt-get install -y fonts-humor-sans
+        rm -rf ~/.cache/matplotlib
+
+    - name: make-header
+      run: |
+        python scripts/make_header.py
+
+    - name: setup directories for Jekyll build
+      run: |
+        rm -rf _site
+        sudo chmod -R 777 .
+
+    - name: Jekyll build
+      uses: docker://fastai/fastpages-jekyll
+      with:
+        args: bash -c "jekyll build -V --strict_front_matter --trace"
+      env:
+        JEKYLL_ENV: 'production'
+
+    - name: copy CNAME file into _site if CNAME exists
+      run: |
+        sudo chmod -R 777 _site/
+        cp CNAME _site/ 2&gt;/dev/null || :
+
+    - name: Deploy
       if: ( github.event_name == 'push' ) || ( github.event_name == 'schedule' )
       uses: peaceiris/actions-gh-pages@v3
       with:
