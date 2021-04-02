@@ -463,7 +463,7 @@ window.onload = wrap_img;
 <h1 id="Tensors">
 <a class="anchor" href="#Tensors" aria-hidden="true"><span class="octicon octicon-link"></span></a>Tensors<a class="anchor-link" href="#Tensors"> </a>
 </h1>
-<p>Right, that's all well and good but how do we use this data and what are images anyway? Well, digital images can be represented as arrays so if you have a colour image you have a 3-dimensional array that has the shape <em>height <em> width </em> channels</em> where red pixel intensity is represented in one channel, green in the next channel and blue in the final channel for RGB images.</p>
+<p>Right, that's all well and good but how do we use this data and what are images anyway? Well, digital images can be represented as arrays so if you have a colour image you have a 3-dimensional array that has the shape <em>height x width x channels</em> where red pixel intensity is represented in one channel, green in the next channel and blue in the final channel for RGB images.</p>
 <p>Let's look at this more concretely. Below we import NumPy and transform the loaded <code>img1</code> from earlier into an array. NumPy knows how to do this with a PIL Image.</p>
 
 </div>
@@ -10545,7 +10545,7 @@ Image is size  (160, 204)
 <div class="cell border-box-sizing text_cell rendered">
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>Currently what we get back from <code>ImageDataset</code> is a PIL image and a tensor representing the labels but for training we want both the image and the labels to be converted to a tensor. For this, we just need to add in a <code>ToTensor</code> transform, which will do this and convert the pixel values to between 0-1. Notice how when we call shape it is slightly different to what we get when the image array shape is displayed with numpy. Pytorch expects images to have shape Channel <em> Height </em> Width as opposed to Height <em> Width </em> Channel that we get with numpy.</p>
+<p>Currently what we get back from <code>ImageDataset</code> is a PIL image and a tensor representing the labels but for training we want both the image and the labels to be converted to a tensor. For this, we just need to add in a <code>ToTensor</code> transform, which will do this and convert the pixel values to between 0-1. Notice how when we call shape it is slightly different to what we get when the image array shape is displayed with numpy. Pytorch expects images to have shape <em>Channel, Height,  Width</em> as opposed to <em>Height, Width, Channel</em> that we get with numpy.</p>
 <p>Finally, we add a normalisation transform to get tensors in the range -1 to 1. Here I am just going to use the Imagenet stats for the mean and standard deviation of each channel, as Imagenette comes from Imagenet data. What you do here depends on what you are using for your model as well. If you are going to use transfer learning and the pre-trained model that you start from has learnt from Imagenet you will also want to use Imagenet stats. If you are starting with a new model, and a new dataset then you want to compute the channels means and standard deviation on your training set images and pass these stats to the normalisation transform.</p>
 
 </div>
@@ -11032,17 +11032,14 @@ Labels have been batched into a batch of size torch.Size([64, 10, 1])
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>This is a really simple neural network. It goes from input to a hidden layer to output layer with these tensors of size:</p>
 <ul>
-<li>_input = (batch_size, n<em>inp)</em>
-</li>
-<li>_input to hidden layer weight tensor = (n_inp, n<em>hidden)</em>
-</li>
-<li>_hidden to output layer weight tensor = (n_hidden, n<em>out)</em>
-</li>
+<li><em>input = (batch_size, n_inp)</em></li>
+<li><em>input to hidden layer weight tensor = (n_inp, n_hidden)</em></li>
+<li><em>hidden to output layer weight tensor = (n_hidden, n_out)</em></li>
 </ul>
 <p>We are essentially just doing a chain of matrix multiplication where matrix multiplication results in this shape:
-<em>(m x n) * (n x o) = (m x o)</em></p>
-<p>So with _(batch_size, n_inp) * (n_inp, n_hidden) = (batch_size, n<em>hidden)</em></p>
-<p>And then _(batch_size, n_hidden) * (n_hidden, n_out) = (batch_size, n<em>out)</em></p>
+<em>(m, n) x (n, o) = (m, o)</em></p>
+<p>So with <em>(batch_size, n_inp) x (n_inp, n_hidden) = (batch_size, n_hidden)</em></p>
+<p>And then <em>(batch_size, n_hidden) x (n_hidden, n_out) = (batch_size, n_out)</em></p>
 <p>Right, so let's see this in action.</p>
 
 </div>
@@ -11215,7 +11212,10 @@ ResNets are a type of deep computer vision neural net architecture that do very 
     </div>
 </div>
 </div>
-
+<details class="description">
+      <summary class="btn btn-sm" data-open="Hide Output" data-close="Show Output"></summary>
+        <p>
+</p>
 <div class="output_wrapper">
 <div class="output">
 
@@ -11318,6 +11318,7 @@ ResNets are a type of deep computer vision neural net architecture that do very 
 </div>
 </div>
 
+    </details>
 </div>
     
 
