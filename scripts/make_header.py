@@ -35,7 +35,7 @@ def list_posts(post_path: str = '_posts/'):
 
 
 def extract_dates(post_list: list):
-    """
+    """Extracts the dates from posts.
 
     Args:
         post_list (list): list of posts
@@ -115,8 +115,9 @@ def filter_titles(post_titles: list, deltas: list, cutoff=-30):
             filtered_titles.append(title)
             filtered_deltas.append(delta + 1)
     sorted_pairs = sorted(zip(filtered_titles, filtered_deltas), key=lambda x: x[1])
-    tuples = zip(*sorted_pairs)
-    filtered_titles, filtered_deltas = [list(tup) for tup in tuples]
+    if sorted_pairs:
+        tuples = zip(*sorted_pairs)
+        filtered_titles, filtered_deltas = [list(tup) for tup in tuples]
     return filtered_titles, filtered_deltas
 
 
